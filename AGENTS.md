@@ -1,86 +1,65 @@
-# AGENTS.md — Wiki Schema & Conventions
+# AGENTS.md — skillsmith Agent Conventions
 
-> This file tells the LLM how your wiki is structured.
-> You and the LLM co-evolve this over time.
+> How agents (Claude Code, sub-agents, future autonomous loops) operate in **this** repo.
+> skillsmith is a TypeScript CLI for creating, testing, and sharing Claude Code skills —
+> and an agent-native harness that improves that CLI. This file is the orchestration contract;
+> it co-evolves with the repo. For the human front door see [README.md](README.md); for the
+> harness component map see [CLAUDE.md](CLAUDE.md).
 
-## Domain: personal
+## What an agent works on here
 
-## Created: 2026-04-07
+The shipped product is the CLI in `src/`. Everything else is the harness the agent uses to
+keep improving the CLI. An agent's job is to extend the five commands (`init`, `test`,
+`publish`, `install`, `list`), keep the test suite green, and improve the harness around them.
 
-## Directory Structure
+## Directory map (this repo)
 
 ```
-raw/              # Immutable source documents (never modified by LLM)
-wiki/             # LLM-generated markdown (the knowledge base)
-  index.md        # Content catalog — every page listed with summary
-  log.md          # Chronological record of operations
-  sources/        # One summary page per ingested source
-  entities/       # Pages for people, organizations, tools, etc.
-  concepts/       # Pages for ideas, frameworks, patterns, etc.
-  syntheses/      # Cross-cutting analyses, comparisons, explorations
-AGENTS.md         # This file — wiki schema and conventions
-config.yaml       # Configuration (LLM provider, sources, schedules)
+src/                 # THE PRODUCT — commander CLI
+  index.ts           #   entry point: defines the 5 commands + flags
+  commands/          #   one file per command: init · test · publish · install · list
+  templates/         #   skill scaffolds (basic · advanced · mcp) emitted by `init`
+tests/               # Vitest suites — templates.test.ts + test-command.test.ts (18 tests)
+eval/                # eval harness for the CLI (golden tasks; to be layered in)
+identity/            # agent identity — SOUL.md · MEMORY.md · HEARTBEAT.md · BRAND.md
+memory/              # long-term memory — MEMORY.md + LEARNINGS.md + daily/topics/archive/
+brain/               # Obsidian knowledge graph — MOC + ORG_CONTEXT + ORG_MEMORY (navigation)
+hooks/               # skillsmith-specific lifecycle hooks (separate from .claude/hooks/)
+skills/              # skillsmith-specific Claude Code skills (separate from .claude/skills/)
+tools/               # auxiliary dev tools (separate from the shipped src/ product)
+scripts/             # inherited harness scripts — memory-search/compress, budget-manager, …
+MAINTAINER-PROMPTS/  # raw maintainer directives (one file per prompt)
+.claude/             # inherited Claude Code harness — rules/ skills/ hooks/ commands/ agents/
+.github/             # CI — workflows/ci.yml (build + test on push)
+.mcp.json            # MCP servers: github · context7 · memory · obsidian (env-var refs)
 ```
 
-## Page Conventions
+## Operating rules for agents
 
-Every wiki page has YAML frontmatter:
+1. **Test before you signal done.** `pnpm build` (0 TS errors) → `pnpm test` (18/18) →
+   exercise the actual command (`pnpm dev -- init test-skill`). "It compiles" is not done.
+2. **One source of truth.** Update docs in place; never create `*-v2.md`. The brain graph
+   (`brain/`) navigates to canonical files — it does not duplicate them.
+3. **Inherited rules apply.** `.claude/rules/*.md` are glob-loaded every session; follow them.
+4. **Strict TypeScript.** No `any`, no default exports, files under 400 lines, named exports.
+5. **No secrets.** skillsmith ships with zero required API keys. `.env.example` lists only the
+   optional MCP-server keys; never commit a real `.env`.
 
-```yaml
----
-title: "Page Title"
-type: source | entity | concept | synthesis | index | log
-created: "YYYY-MM-DD"
-updated: "YYYY-MM-DD"
-tags: [tag1, tag2]
-sources: ["raw/filename.md"] # Which raw sources inform this page
-related: ["[[Other Page]]"] # Explicit cross-references
-summary: "One-line summary" # Used in index.md
----
-```
+## Skill spec (what `skillsmith test` enforces)
 
-## Wikilinks
+A Claude Code skill is a `SKILL.md` markdown file. `skillsmith test` validates:
+required sections (title, trigger, steps), token efficiency (< 2,000 words), no empty
+sections, no hardcoded absolute paths, consistent naming. When an agent edits the
+validation logic in `src/commands/test.ts`, it MUST keep `tests/test-command.test.ts` green.
 
-Use `[[Page Title]]` to link between pages. The LLM maintains these links.
-Orphan pages (no inbound links) are flagged by `wikimem lint`.
+## Commit grammar
 
-## Operations
+Conventional commits, scoped so git snap-back works at three granularities:
 
-### Ingest
+| Scope                | Use for                                                            |
+| -------------------- | ----------------------------------------------------------------- |
+| `feat(skill):`       | a single skill / template change inside the product               |
+| `feat(employee):`    | an agent-level change (identity, a sub-agent, a hook)             |
+| `feat(company):`     | a repo-wide change (harness structure, CI, multi-area refactor)   |
 
-When a new source is added to raw/:
-
-1. Read the source completely
-2. Create/update a source summary page in wiki/sources/
-3. Identify entities mentioned → create/update entity pages
-4. Identify concepts discussed → create/update concept pages
-5. Update index.md with new/modified pages
-6. Append to log.md
-
-### Query
-
-When answering a question:
-
-1. Read index.md to find relevant pages
-2. Read the relevant pages
-3. Synthesize an answer with [[wikilink]] citations
-4. Optionally file the answer as a synthesis page
-
-### Lint
-
-Periodically check for:
-
-- Contradictions between pages
-- Stale claims superseded by newer sources
-- Orphan pages with no inbound links
-- Missing cross-references
-- Important concepts mentioned but lacking their own page
-- Data gaps that could be filled
-
-## Quality Standards
-
-- Every claim should cite its source via wikilink
-- Summaries should be concise (1-3 sentences in frontmatter)
-- Pages should be interconnected (no isolated islands)
-- Prefer updating existing pages over creating new ones
-- Flag contradictions explicitly rather than silently overwriting
+Also standard: `fix:`, `docs:`, `refactor:`, `test:`, `chore:`. One logical change per commit.

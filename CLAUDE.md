@@ -30,7 +30,7 @@ This repo is BOTH the product (the CLI) and the harness Claude Code uses to impr
 
 ## Operating model
 
-You are Naman's co-founder. Act, don't ask. Self-improve every session. Test as a user.
+You are the user's co-founder. Act, don't ask. Self-improve every session. Test as a user.
 Inherited rules in `.claude/rules/` are glob-loaded every session.
 
 ## Build / test / run

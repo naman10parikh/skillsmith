@@ -1,0 +1,61 @@
+{
+  "name": "skillsmith",
+  "version": "1.0.0",
+  "description": "Create, test, and share Claude Code skills. The npm registry for AI agent skills.",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "skillsmith": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "start": "tsx src/index.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "tsc --noEmit",
+    "prepublishOnly": "npm run lint && npm run build && npm run test"
+  },
+  "keywords": [
+    "claude-code",
+    "ai-agent",
+    "skills",
+    "registry",
+    "harness",
+    "developer-tools",
+    "cli",
+    "scaffold",
+    "anthropic",
+    "mcp"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/naman10parikh/skillsmith"
+  },
+  "homepage": "https://github.com/naman10parikh/skillsmith#readme",
+  "bugs": {
+    "url": "https://github.com/naman10parikh/skillsmith/issues"
+  },
+  "author": "Naman Parikh <naman10parikh@gmail.com>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "commander": "^14.0.3",
+    "chalk": "^5.6.2",
+    "@inquirer/prompts": "^8.3.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3",
+    "tsx": "^4.19.4",
+    "vitest": "^3.2.4",
+    "@types/node": "^22.15.0"
+  }
+}

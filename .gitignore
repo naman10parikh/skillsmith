@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+*.tsbuildinfo
+
+# Secrets — NEVER commit
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# macOS metadata
+.DS_Store
+**/.DS_Store
+
+# Editor
+.vscode/
+.idea/
+
+# Ephemeral harness state (never commit)
+.claude/worktrees/
+.claude/backups/
+.claude/scheduled_tasks.lock
+.claude/vp-signals/*.done
+.claude/vp-signals/*.needs-qa
+.claude/vp-signals/*.migrating
+
+# Obsidian temp files
+brain/Untitled*

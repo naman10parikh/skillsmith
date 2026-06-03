@@ -1,0 +1,15 @@
+# skillsmith
+
+> Create, test, and share Claude Code skills. The npm registry for AI agent skills.
+
+## Documentation
+
+- [README.md](README.md): Create, test, and share Claude Code skills. The npm registry for AI agent skills.
+- [AGENTS.md](AGENTS.md): > How agents (Claude Code, sub-agents, future autonomous loops) operate in this repo.
+- [CLAUDE.md](CLAUDE.md): > Forged from Energy via harness-forge (CP103). One repo = one recursively self-improving
+- [QUICKSTART.md](QUICKSTART.md): bash
+
+## Notes
+
+- This file follows the llms.txt convention (https://llmstxt.org) so AI agents can
+  discover this repo's docs without scraping. Generated from the README + key docs.

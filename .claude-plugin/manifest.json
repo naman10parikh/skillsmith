@@ -1,0 +1,43 @@
+{
+  "name": "skillsmith",
+  "version": "1.0.0",
+  "description": "Create, test, and share Claude Code skills. The npm registry for AI agent skills.",
+  "type": "mcp",
+  "publisher": "energy",
+  "homepage": "https://github.com/naman10parikh/skillsmith",
+  "license": "MIT",
+  "icon": "https://raw.githubusercontent.com/naman10parikh/skillsmith/main/assets/icon.png",
+  "mcpServer": {
+    "command": "npx",
+    "args": ["-y", "@energy/skillsmith", "mcp"],
+    "env": {}
+  },
+  "tools": [
+    {
+      "name": "skillsmith_init",
+      "description": "Scaffold a new Claude Code skill from a template (basic | advanced | mcp)"
+    },
+    {
+      "name": "skillsmith_test",
+      "description": "Validate a skill directory against the Claude Code skill spec"
+    },
+    {
+      "name": "skillsmith_list",
+      "description": "Browse the built-in skill catalog, optionally filtered by category"
+    },
+    {
+      "name": "skillsmith_validate_spec",
+      "description": "Check raw SKILL.md content for spec compliance without writing to disk"
+    }
+  ],
+  "categories": ["developer-tools", "ai-agent", "skills"],
+  "keywords": ["claude-code", "skills", "mcp", "registry", "scaffolding"],
+  "requiredPermissions": [
+    "filesystem:read",
+    "filesystem:write"
+  ],
+  "optionalPermissions": [
+    "network:fetch"
+  ],
+  "minClaudeCodeVersion": "1.0.0"
+}

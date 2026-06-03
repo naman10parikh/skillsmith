@@ -1,22 +1,40 @@
 {
-  "name": "skillsmith",
+  "name": "@energy/skillsmith",
   "version": "1.0.0",
   "description": "Create, test, and share Claude Code skills. The npm registry for AI agent skills.",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
-    "skillsmith": "dist/index.js"
+    "skillsmith": "dist/index.js",
+    "skillsmith-mcp": "dist/mcp/server.js"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./mcp": {
+      "import": "./dist/mcp/server.js",
+      "types": "./dist/mcp/server.d.ts"
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   },
   "files": [
     "dist",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    ".claude-plugin"
   ],
   "scripts": {
     "build": "tsc",
     "dev": "tsx src/index.ts",
     "start": "tsx src/index.ts",
+    "mcp": "node dist/mcp/server.js",
+    "mcp:dev": "tsx src/mcp/server.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "tsc --noEmit",

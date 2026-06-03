@@ -6,6 +6,9 @@ import { testCommand } from "./commands/test.js";
 import { publishCommand } from "./commands/publish.js";
 import { installCommand } from "./commands/install.js";
 import { listCommand } from "./commands/list.js";
+import { spawn } from "node:child_process";
+import { fileURLToPath } from "node:url";
+import { join, dirname } from "node:path";
 
 const program = new Command();
 
@@ -59,5 +62,16 @@ program
   .option("--json", "Output as JSON", false)
   .option("--limit <n>", "Max results", "20")
   .action(listCommand);
+
+program
+  .command("mcp")
+  .description("Start the skillsmith MCP server (JSON-RPC 2.0 over stdio)")
+  .action(() => {
+    // Re-exec the MCP server entry point so it owns stdin/stdout exclusively.
+    const __dirname = dirname(fileURLToPath(import.meta.url));
+    const serverPath = join(__dirname, "mcp", "server.js");
+    const child = spawn(process.execPath, [serverPath], { stdio: "inherit" });
+    child.on("exit", (code) => process.exit(code ?? 0));
+  });
 
 program.parse();

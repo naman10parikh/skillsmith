@@ -1,4 +1,4 @@
-# {{AGENT_NAME}} — Heartbeat
+# Skillsmith — Heartbeat
 
 ## Schedule
 

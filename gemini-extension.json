@@ -1,0 +1,17 @@
+{
+  "name": "skillsmith",
+  "version": "1.0.0",
+  "description": "Create, test and vet SKILL.md skills for any coding agent.",
+  "contextFileName": "GEMINI.md",
+  "mcpServers": {
+    "skillsmith": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "-p",
+        "github:naman10parikh/skillsmith",
+        "skillsmith-mcp"
+      ]
+    }
+  }
+}

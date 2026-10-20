@@ -1,15 +1,40 @@
-# skillsmith
+# Skillsmith
 
-> Create, test, and share Claude Code skills. The npm registry for AI agent skills.
+> Create, test and vet SKILL.md skills for any coding agent. Skillsmith (`skillsmith`) scaffolds an Agent Skill from a template, checks it against the rules agents rely on (frontmatter name and description, a title, a trigger, steps, a size limit, no absolute paths), and checks an untrusted skill inside an E2B microVM before you install it. It ships a CLI (`skillsmith`), an MCP server (`skillsmith-mcp`, four tools), skills and a Claude Code plugin, and it improves itself through its own evals.
 
-## Documentation
+## Start here
 
-- [README.md](README.md): Create, test, and share Claude Code skills. The npm registry for AI agent skills.
-- [AGENTS.md](AGENTS.md): > How agents (Claude Code, sub-agents, future autonomous loops) operate in this repo.
-- [CLAUDE.md](CLAUDE.md): > Forged from Energy via harness-forge (CP103). One repo = one recursively self-improving
-- [QUICKSTART.md](QUICKSTART.md): bash
+- [AGENTS.md](AGENTS.md): what it does, every command and MCP tool, the editing rules, what not to do
+- [README.md](README.md): overview, one-step install for every coding agent, quick start
 
-## Notes
+## Skills
 
-- This file follows the llms.txt convention (https://llmstxt.org) so AI agents can
-  discover this repo's docs without scraping. Generated from the README + key docs.
+- [write-a-skill](skills/write-a-skill/SKILL.md): write a new skill that agents find and follow, then check it
+- [vet-untrusted-skill](skills/vet-untrusted-skill/SKILL.md): check a third-party skill, in an E2B sandbox when possible, before installing it
+- [audit-skill-library](skills/audit-skill-library/SKILL.md): check a whole skills folder and fix the worst failures first
+
+## MCP tools
+
+- [MCP server source](src/mcp/server.ts): four tools over stdio: skillsmith_init, skillsmith_test, skillsmith_validate_spec, skillsmith_list
+- [Plugin manifest](.claude-plugin/plugin.json): the Claude Code plugin (skills, sub-agents, hook, MCP server)
+- [Gemini CLI extension](gemini-extension.json): context and MCP server for Gemini CLI
+- [A2A agent card](.well-known/agent-card.json): name, description, skills
+
+## Identity
+
+- [SOUL.md](identity/SOUL.md): who Skillsmith is, its mission and boundaries
+- [BRAND.md](identity/BRAND.md): why the name, the tagline
+- [HEARTBEAT.md](identity/HEARTBEAT.md): what it checks and how often
+
+## Docs
+
+- [QUICKSTART.md](QUICKSTART.md): from nothing to a checked skill
+- [Golden evals](eval/README.md): what the 23 evals check
+- [dsip.json](dsip.json): the self-improvement contract (level L2)
+- [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md)
+
+## Optional
+
+- [MEMORY.md](memory/MEMORY.md): long-term memory index
+- [LEARNINGS.md](memory/LEARNINGS.md): corrections that became rules
+- [Knowledge graph hub](brain/MOC%20-%20skillsmith.md): the Obsidian brain

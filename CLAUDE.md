@@ -1,48 +1,37 @@
-# skillsmith — Agent-Native Harness
+@AGENTS.md
 
-> Forged from Energy via harness-forge (CP103). One repo = one recursively self-improving
-> agent-native harness. Energy is the control center; this is a self-contained flavor.
+# CLAUDE.md: what is specific to Claude Code here
 
-## What this is
+AGENTS.md (imported above) is the one source: what Skillsmith does, its tools, where things live and
+what not to do. This file adds only what Claude Code loads or needs.
 
-Skillsmith is a TypeScript CLI for **creating, testing, and sharing Claude Code skills** — the npm registry for AI agent skills. Skills are markdown files (`SKILL.md`) that teach Claude new capabilities. The CLI provides five commands: `init` (scaffold a skill from basic/advanced/mcp templates), `test` (validate against the skill spec — sections, token efficiency, no hardcoded paths), `publish` (validate + push to the GitHub-based registry), `install` (pull a skill into `.claude/skills/`), and `list` (browse the registry). The shipped product is a standalone CLI built with `commander`, `chalk`, and `@inquirer/prompts` — no runtime dependency on Energy.
+## What Claude Code loads in this repository
 
-## Harness components (the formula → where they live in this repo)
-
-This repo is BOTH the product (the CLI) and the harness Claude Code uses to improve the product.
-
-| Formula component        | Lives here                          | What it holds                                                        |
-| ------------------------ | ----------------------------------- | -------------------------------------------------------------------- |
-| **The product (CLI)**    | `src/` + `package.json` `bin`       | `index.ts` (commander entry) + `commands/` + `templates/`            |
-| **Tests**                | `tests/`                            | Vitest suites for templates and validation logic                     |
-| **Identity**             | `identity/`                         | SOUL.md · MEMORY.md · HEARTBEAT.md · BRAND.md                        |
-| **Memory**               | `memory/` + `brain/`                | MEMORY.md/LEARNINGS.md index + daily/topics/archive; Obsidian graph  |
-| **Skills**               | `.claude/skills/` (+ `skills/`)     | 26 inherited Claude Code skills; `skills/` for skillsmith-specific   |
-| **Hooks**                | `.claude/hooks/` (+ `hooks/`)       | 14 inherited lifecycle hooks (session-start, pre-compact, etc.)      |
-| **Sub-agents**           | `.claude/agents/`                   | 7 sub-agents (code-reviewer, research-agent, architect, …)           |
-| **Rules**                | `.claude/rules/`                    | 22 inherited operating rules, glob-loaded every session              |
-| **Commands**             | `.claude/commands/`                 | 16 inherited slash commands (/start, /wrap-up, /handoff, …)          |
-| **Plugins / MCP**        | `.mcp.json`                         | github · context7 · memory · obsidian (placeholders, env-var refs)   |
-| **Eval / observer**      | `eval/`                             | Eval harness for the CLI (to be layered in)                          |
-
-> Note: this is a CLI, not a web app — the forge's `src/frontend|backend|db|auth` placeholders
-> were removed. The product lives at `src/` (standard CLI layout: `package.json` + `src/` + `bin`).
+- **Rules:** `.claude/rules/*.md`, glob-loaded every session (the fleet's shared operating rules).
+- **Hooks:** `.claude/settings.json` wires `block-dangerous-commands.cjs` (Bash) and
+  `protect-secrets.cjs` (Read, Edit, Write, Bash) before each tool call, and `hooks/check-skill.cjs`
+  after each Edit or Write: when the file is a `SKILL.md`, it names anything that would stop another
+  agent finding or following the skill. Fix what it names before moving on.
+- **Sub-agents:** `.claude/agents/`, flat. Use `skill-reviewer` after writing a skill and
+  `skill-security-auditor` before installing one from outside.
+- **MCP:** `.mcp.json` starts only Skillsmith's own server, because the plugin ships that file to
+  strangers. The maintainer servers (a local build of the server, GitHub, Context7, memory, the
+  Obsidian vault in `brain/`) live in `.mcp.dev.json`: start Claude Code with
+  `claude --mcp-config .mcp.dev.json` to load them.
+- **Plugin:** `.claude-plugin/plugin.json` bundles the skills, the two Skillsmith sub-agents, the
+  check-skill hook and the MCP server. Check it with `claude plugin validate .`. The older
+  `.claude-plugin/manifest.json` is kept because the unit tests read it.
 
 ## Operating model
 
-You are the user's co-founder. Act, don't ask. Self-improve every session. Test as a user.
-Inherited rules in `.claude/rules/` are glob-loaded every session.
+You are the maintainer's co-founder, not an assistant: act, then verify. Test as a user: scaffold a
+real skill, run `skillsmith test` on it and read the output. "It compiles" means nothing. When a tool
+fails, try another route before you report a block.
 
-## Build / test / run
+## Before you say done
 
 ```bash
-pnpm install
-pnpm build          # tsc → dist/
-pnpm test           # vitest run (18 tests)
-pnpm dev -- --help  # run the CLI from source via tsx
-node dist/index.js --help   # run the built CLI
+pnpm build && pnpm test && pnpm eval
+node dist/index.js test skills/write-a-skill --strict
+claude plugin validate .
 ```
-
-## Commit convention
-
-feat(skill): · feat(employee): · feat(company): — so git snap-back works at all 3 granularities.

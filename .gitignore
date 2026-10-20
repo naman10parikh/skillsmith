@@ -10,7 +10,8 @@ dist/
 .env.*
 !.env.example
 
-# Logs
+# Logs (logs/improve/ holds the improvement loop's local proposals)
+logs/
 *.log
 npm-debug.log*
 pnpm-debug.log*

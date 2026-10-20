@@ -70,7 +70,7 @@ describe("MCP skillsmith_validate_spec logic", () => {
   });
 
   it("flags hardcoded /Users/ paths", () => {
-    const content = "# Skill\n\n## When to Use\n\nUse on /Users/naman/project\n\n## Steps\n\n1. Go\n";
+    const content = "# Skill\n\n## When to Use\n\nUse on /Users/alex/project\n\n## Steps\n\n1. Go\n";
     const results = validateContent(content);
     const pathError = results.find((r) => r.name === "No hardcoded paths");
     expect(pathError?.passed).toBe(false);

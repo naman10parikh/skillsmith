@@ -1,0 +1,16 @@
+{
+  "description": "Skillsmith: after an agent writes or edits a SKILL.md, name anything that would stop another agent from finding or following the skill.",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/check-skill.cjs\""
+          }
+        ]
+      }
+    ]
+  }
+}

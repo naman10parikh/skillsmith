@@ -1,7 +1,7 @@
 {
   "name": "@energy/skillsmith",
   "version": "1.0.0",
-  "description": "Create, test, and share Claude Code skills. The npm registry for AI agent skills.",
+  "description": "Create, test and vet SKILL.md skills for any coding agent.",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -31,11 +31,14 @@
   ],
   "scripts": {
     "build": "tsc",
+    "prepare": "tsc",
     "dev": "tsx src/index.ts",
     "start": "tsx src/index.ts",
     "mcp": "node dist/mcp/server.js",
     "mcp:dev": "tsx src/mcp/server.ts",
     "test": "vitest run",
+    "eval": "vitest run --config eval/vitest.config.ts",
+    "improve": "node scripts/improve.mjs",
     "test:watch": "vitest",
     "lint": "tsc --noEmit",
     "prepublishOnly": "npm run lint && npm run build && npm run test"
@@ -60,20 +63,21 @@
   "bugs": {
     "url": "https://github.com/naman10parikh/skillsmith/issues"
   },
-  "author": "Naman Parikh <naman10parikh@gmail.com>",
+  "author": "Naman Parikh",
   "license": "MIT",
   "engines": {
     "node": ">=18"
   },
   "dependencies": {
-    "commander": "^14.0.3",
+    "@inquirer/prompts": "^8.3.2",
     "chalk": "^5.6.2",
-    "@inquirer/prompts": "^8.3.2"
+    "commander": "^14.0.3",
+    "e2b": "^2.56.0"
   },
   "devDependencies": {
-    "typescript": "^5.8.3",
+    "@types/node": "^22.15.0",
     "tsx": "^4.19.4",
-    "vitest": "^3.2.4",
-    "@types/node": "^22.15.0"
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
   }
 }

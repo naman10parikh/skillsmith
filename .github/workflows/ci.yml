@@ -30,3 +30,12 @@ jobs:
 
       - name: Test
         run: pnpm test
+
+      - name: Golden evals
+        run: pnpm eval
+
+      - name: Smoke the bins
+        run: |
+          node dist/index.js --version
+          node dist/index.js test skills/write-a-skill --strict
+          node dist/mcp/server.js < /dev/null

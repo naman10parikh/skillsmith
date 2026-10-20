@@ -8,7 +8,8 @@ ready to share. The name is lowercase to match its npm package and CLI binary (`
 
 ## Tagline
 
-**Create, test, and share Claude Code skills.** The npm registry for AI-agent skills.
+**Create, test and vet SKILL.md skills for any coding agent.** The shared registry is planned:
+today `publish` validates a skill and `install` writes a starter from a built-in catalog.
 
 ## Positioning
 
@@ -24,7 +25,7 @@ Direct, practical, developer-first. Show the command, then the result. No hype, 
 
 > Claude Code skills are markdown files that teach Claude new capabilities. Skillsmith gives
 > you the toolchain: scaffold with best practices, validate against the spec, and publish to a
-> shared registry. `npx skillsmith init my-skill` to start.
+> shared registry. `npx -y -p github:naman10parikh/skillsmith skillsmith init my-skill` to start.
 
 ## Marks
 

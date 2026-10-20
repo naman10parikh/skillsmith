@@ -1,0 +1,17 @@
+{
+  "name": "skillsmith",
+  "owner": {
+    "name": "Naman Parikh",
+    "url": "https://github.com/naman10parikh"
+  },
+  "plugins": [
+    {
+      "name": "skillsmith",
+      "source": "./",
+      "description": "Create, test and vet SKILL.md skills for any coding agent."
+    }
+  ],
+  "metadata": {
+    "description": "Create, test and vet SKILL.md skills for any coding agent."
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "name": "Skillsmith",
+  "description": "Create, test and vet SKILL.md skills for any coding agent.",
+  "url": "https://github.com/naman10parikh/skillsmith",
+  "version": "1.0.0",
+  "provider": {
+    "organization": "Naman Parikh",
+    "url": "https://github.com/naman10parikh"
+  },
+  "capabilities": {
+    "streaming": false
+  },
+  "defaultInputModes": [
+    "text/plain"
+  ],
+  "defaultOutputModes": [
+    "text/plain"
+  ],
+  "skills": [
+    {
+      "id": "write-a-skill",
+      "name": "write-a-skill",
+      "description": "Write a new skill that coding agents will find and follow, then check it with skillsmith."
+    },
+    {
+      "id": "vet-untrusted-skill",
+      "name": "vet-untrusted-skill",
+      "description": "Check a third-party skill, inside an E2B sandbox when possible, before you install it."
+    },
+    {
+      "id": "audit-skill-library",
+      "name": "audit-skill-library",
+      "description": "Check every skill in a folder and fix what stops agents from finding or following them, worst first."
+    }
+  ]
+}

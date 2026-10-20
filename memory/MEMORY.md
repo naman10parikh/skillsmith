@@ -8,6 +8,10 @@
 - **2026-05-25** — skillsmith ships as a CLI, not a web app. Standard layout: `package.json` + `src/` (`index.ts` + `commands/` + `templates/`) + `bin`. The forge's `src/frontend|backend|db|auth` placeholders were dropped on extraction.
 - **2026-05-25** — Five commands define the product: `init` · `test` · `publish` · `install` · `list`. The registry is GitHub-based (repos tagged `skillsmith-skill`).
 
+- **2026-10-19** — A skill must carry YAML frontmatter with `name` and `description`: agents find a skill by them. `skillsmith test`, the MCP server, `sandbox-run` and the `check-skill` hook all fail a skill without it, and every template ships it.
+- **2026-10-19** — The shared registry is not live, so `install` writes a self-contained starter skill and never points an agent at a source URL nobody controls.
+- **2026-10-19** — The npm name `skillsmith` belongs to another author and `@energy/skillsmith` is unpublished: GitHub is the install route (`npx -y -p github:naman10parikh/skillsmith skillsmith`).
+
 ## Key Patterns
 
 - **Skill spec validation** lives in `src/commands/test.ts`: required sections (title/trigger/steps), token efficiency (< 2,000 words), no empty sections, no hardcoded absolute paths, consistent naming. Edits there must keep `tests/test-command.test.ts` green.

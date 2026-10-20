@@ -5,7 +5,7 @@
  * service is not yet live. The npm package is scoped to @energy/skillsmith.
  * Publication requires the `@energy` npm org to be claimed.
  *
- * Chairman-blocked:
+ * Blocked on the maintainer:
  *   - Claim the `@energy` npm org at https://www.npmjs.com/org/create
  *   - Run `npm publish` once the org is live
  *   - Deploy registry.skillsmith.dev (GitHub-backed, see TODOS.md §REG-02)

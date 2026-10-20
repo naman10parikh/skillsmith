@@ -9,7 +9,7 @@
   "icon": "https://raw.githubusercontent.com/naman10parikh/skillsmith/main/assets/icon.png",
   "mcpServer": {
     "command": "npx",
-    "args": ["-y", "@energy/skillsmith", "mcp"],
+    "args": ["-y", "-p", "github:naman10parikh/skillsmith", "skillsmith-mcp"],
     "env": {}
   },
   "tools": [

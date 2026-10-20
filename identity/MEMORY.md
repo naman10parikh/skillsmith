@@ -8,7 +8,7 @@
 - Strategy: ship a tight five-command CLI (`init` · `test` · `publish` · `install` · `list`) plus an MCP server, keep it green, and self-improve the harness around it every session.
 - Platform: a standalone TypeScript CLI (`commander` + `chalk` + `@inquirer/prompts`), ESM, strict TS, Node ≥ 18. Zero required secrets.
 - Created: 2026-05-25 (forged from Energy via the CP103 harness-forge recipe).
-- Last successful scan: (updated by agent)
+- Last successful scan: the daily improvement loop (`.github/workflows/improve.yml`) writes its result to the job summary.
 - Key learnings: skill-spec validation lives in `src/commands/test.ts`; never reintroduce `@energy/*` coupling; one source of truth per topic.
 
 ## Patterns Discovered

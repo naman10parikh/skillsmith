@@ -56,10 +56,11 @@ read and report; the parent edits.
 | --- | --- |
 | `src/index.ts`, `src/commands/` | The CLI: one file per command. `src/commands/test.ts` holds the validator. |
 | `src/templates/` | The basic, advanced and mcp scaffolds `init` writes. |
+| `src/catalog.ts` | The built-in starter catalog, the one list `list`, `install` and `skillsmith_list` read. |
 | `src/mcp/server.ts`, `src/mcp/registry.ts` | The MCP server (its own copy of the validator) and the registry contract (not live). |
 | `src/memory/search.ts`, `src/observability/runs.ts` | BM25 memory search and the run log. |
 | `hooks/check-skill.cjs`, `hooks/hooks.json` | The plugin hook: after a `SKILL.md` is written, it names anything that would stop an agent using it. |
-| `tests/`, `eval/` | 25 unit tests and 23 golden evals (including CLI, MCP and hook agreement). |
+| `tests/`, `eval/` | 25 unit tests and 24 golden evals (including CLI, MCP and hook agreement). |
 | `identity/`, `memory/`, `brain/` | SOUL, BRAND, HEARTBEAT and MEMORY; long-term memory and append-only LEARNINGS; the Obsidian brain. |
 | `skills/`, `.claude/` | Skillsmith's own skills, and the maintainer harness (rules, agents, settings, general hooks). |
 | `.claude-plugin/`, `gemini-extension.json`, `.well-known/agent-card.json` | Claude Code plugin, Gemini CLI extension, A2A agent card. |
@@ -70,7 +71,7 @@ read and report; the parent edits.
 ```bash
 pnpm install      # Node >= 18; also builds dist/ (the prepare script)
 pnpm test         # 25 unit tests
-pnpm eval         # 23 golden evals against the built CLI, MCP server and hook
+pnpm eval         # 24 golden evals against the built CLI, MCP server and hook
 pnpm improve      # the self-improvement loop; writes logs/improve/latest.md
 node dist/index.js test skills/write-a-skill --strict
 ```

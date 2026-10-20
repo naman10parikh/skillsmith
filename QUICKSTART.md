@@ -28,7 +28,7 @@ git clone https://github.com/naman10parikh/skillsmith
 cd skillsmith
 pnpm install               # also builds dist/
 pnpm test                  # 25 unit tests
-pnpm eval                  # 23 golden evals
+pnpm eval                  # 24 golden evals
 node dist/index.js --help  # run the built CLI
 ```
 

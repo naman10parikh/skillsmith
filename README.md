@@ -140,11 +140,12 @@ check a draft before saving it), a Claude Code hook (it fires after an agent wri
 and `sandbox-run` (inside an E2B microVM, for text you do not trust). The golden evals fail the build
 if the first three disagree.
 
-`init` writes skills that pass `test --strict` from the start. The shared registry is not live yet:
-`install` writes a self-contained starter skill from a built-in catalog of 8, and `publish` validates a
-skill and explains how to share it through GitHub. `init`, `publish`, `install` and `sandbox-run`
-append one line per run to `~/.skillsmith/runs.jsonl`: the command, whether it worked and how long it
-took.
+`init` writes skills that pass `test --strict` from the start. The shared registry is not live yet.
+`install` writes a self-contained starter skill from a built-in catalog of 12 starter skills. The catalog is
+one list, in [src/catalog.ts](src/catalog.ts): `list`, `install` and the MCP tool `skillsmith_list` all
+read it. `publish` validates a skill and explains how to share it through GitHub. `init`, `publish`,
+`install` and `sandbox-run` append one line per run to `~/.skillsmith/runs.jsonl`: the command, whether it
+worked and how long it took.
 
 ### Every command
 
@@ -170,7 +171,7 @@ The MCP server's four tools (`skillsmith_init`, `skillsmith_test`, `skillsmith_v
 pnpm install      # also builds dist/
 pnpm build        # tsc to dist/
 pnpm test         # 25 unit tests
-pnpm eval         # 23 golden evals against the built CLI, MCP server and hook
+pnpm eval         # 24 golden evals against the built CLI, MCP server and hook
 pnpm improve      # the self-improvement loop; writes logs/improve/latest.md
 ```
 

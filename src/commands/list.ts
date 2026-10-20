@@ -1,4 +1,5 @@
 import chalk from "chalk";
+import { CATALOG } from "../catalog.js";
 
 interface ListOptions {
   category?: string;
@@ -14,79 +15,8 @@ interface SkillEntry {
   downloads: number;
 }
 
-// Curated registry — grows as community publishes skills
-const REGISTRY: SkillEntry[] = [
-  {
-    name: "commit-msg",
-    description: "Auto-generate conventional commit messages",
-    category: "git",
-    stars: 0,
-    downloads: 0,
-  },
-  {
-    name: "test-generator",
-    description: "Generate Vitest/Jest tests from source files",
-    category: "testing",
-    stars: 0,
-    downloads: 0,
-  },
-  {
-    name: "api-scaffolder",
-    description: "Scaffold REST/GraphQL endpoints with validation",
-    category: "backend",
-    stars: 0,
-    downloads: 0,
-  },
-  {
-    name: "refactor-guide",
-    description: "Step-by-step refactoring with safety checks",
-    category: "code-quality",
-    stars: 0,
-    downloads: 0,
-  },
-  {
-    name: "debug-assistant",
-    description: "Systematic debugging with hypothesis testing",
-    category: "debugging",
-    stars: 0,
-    downloads: 0,
-  },
-  {
-    name: "pr-reviewer",
-    description: "Automated code review checklist for pull requests",
-    category: "code-quality",
-    stars: 0,
-    downloads: 0,
-  },
-  {
-    name: "migration-planner",
-    description: "Plan and execute database/API migrations safely",
-    category: "backend",
-    stars: 0,
-    downloads: 0,
-  },
-  {
-    name: "accessibility-audit",
-    description: "WCAG compliance checker for web components",
-    category: "frontend",
-    stars: 0,
-    downloads: 0,
-  },
-  {
-    name: "perf-profiler",
-    description: "Performance bottleneck detection and fix suggestions",
-    category: "performance",
-    stars: 0,
-    downloads: 0,
-  },
-  {
-    name: "doc-generator",
-    description: "Generate API docs, READMEs, and changelogs",
-    category: "documentation",
-    stars: 0,
-    downloads: 0,
-  },
-];
+// The built-in catalog (src/catalog.ts). Stars and downloads stay 0 until the shared registry is live.
+const REGISTRY: SkillEntry[] = CATALOG.map((s) => ({ ...s, stars: 0, downloads: 0 }));
 
 export async function listCommand(options: ListOptions): Promise<void> {
   let skills = REGISTRY;

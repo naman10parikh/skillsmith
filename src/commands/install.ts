@@ -2,6 +2,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { homedir } from "node:os";
 import chalk from "chalk";
+import { CATALOG } from "../catalog.js";
 
 interface InstallOptions {
   global: boolean;
@@ -10,38 +11,6 @@ interface InstallOptions {
 
 const REGISTRY_URL = "https://registry.skillsmith.dev";
 
-// Curated skill catalog (shipped with CLI, updated via `skillsmith update`)
-const BUILTIN_CATALOG: Record<
-  string,
-  { description: string; url: string; category: string }
-> = {
-  "commit-msg": {
-    description:
-      "Auto-generate conventional commit messages from staged changes",
-    url: "https://github.com/skillsmith-registry/commit-msg",
-    category: "git",
-  },
-  "test-generator": {
-    description: "Generate Vitest/Jest tests from source files",
-    url: "https://github.com/skillsmith-registry/test-generator",
-    category: "testing",
-  },
-  "api-scaffolder": {
-    description: "Scaffold REST/GraphQL endpoints with validation and tests",
-    url: "https://github.com/skillsmith-registry/api-scaffolder",
-    category: "backend",
-  },
-  "refactor-guide": {
-    description: "Step-by-step refactoring with safety checks at each stage",
-    url: "https://github.com/skillsmith-registry/refactor-guide",
-    category: "code-quality",
-  },
-  "debug-assistant": {
-    description: "Systematic debugging workflow with hypothesis testing",
-    url: "https://github.com/skillsmith-registry/debug-assistant",
-    category: "debugging",
-  },
-};
 
 export async function installCommand(
   name: string,
@@ -56,7 +25,7 @@ export async function installCommand(
   console.log(chalk.blue(`\n⚡ Installing skill: ${chalk.bold(name)}\n`));
 
   // Check builtin catalog first
-  const catalogEntry = BUILTIN_CATALOG[name];
+  const catalogEntry = CATALOG.find((s) => s.name === name);
 
   if (!catalogEntry) {
     // Try fetching from registry
@@ -66,7 +35,7 @@ export async function installCommand(
     );
     console.log(
       chalk.dim(
-        `  Available skills: ${Object.keys(BUILTIN_CATALOG).join(", ")}`,
+        `  Available skills: ${CATALOG.map((s) => s.name).join(", ")}`,
       ),
     );
     console.log(chalk.dim(`  Run: skillsmith list`));

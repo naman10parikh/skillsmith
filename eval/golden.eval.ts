@@ -185,4 +185,16 @@ describe("the rest of the product", () => {
     expect(r.stderr).toContain("E2B_API_KEY is not set");
     expect(JSON.parse(readFileSync(runs, "utf8").trim()).ok).toBe(false);
   });
+
+  it("E15 list, install and the MCP server read one catalog: every entry installs and passes, and the README gives its size", () => {
+    const listed = (JSON.parse(cli(["list", "--json", "--limit", "1000"]).stdout) as { name: string }[]).map((s) => s.name);
+    const [served] = mcp([{ name: "skillsmith_list" }]) as { skills: { name: string }[]; totalCount: number }[];
+    expect(served.skills.map((s) => s.name)).toEqual(listed);
+    expect(served.totalCount).toBe(listed.length);
+    for (const name of listed) {
+      cli(["install", name, "--dir", "catalog"]);
+      expect(cliVerdict(join(dir, "catalog", name)).passed, name).toBe(true);
+    }
+    expect(readFileSync(join(ROOT, "README.md"), "utf8")).toContain(`built-in catalog of ${listed.length} starter skills`);
+  });
 });

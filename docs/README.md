@@ -28,7 +28,8 @@ The CLI is [src/index.ts](../src/index.ts), and each command lives in [src/comma
 `init` writes one of three templates from [src/templates/index.ts](../src/templates/index.ts).
 The templates are basic, advanced, and one for a skill that wraps an MCP server.
 `test` in [src/commands/test.ts](../src/commands/test.ts) runs the spec checks on a `SKILL.md`.
-`install` in [src/commands/install.ts](../src/commands/install.ts) writes a starter skill from a small catalog built into the code.
+`install` in [src/commands/install.ts](../src/commands/install.ts) writes a starter skill from the built-in catalog in [src/catalog.ts](../src/catalog.ts).
+`list` and the MCP tool `skillsmith_list` read the same catalog.
 
 The same checks run in three more places.
 The MCP server in [src/mcp/server.ts](../src/mcp/server.ts) keeps its own copy, used by two of its four tools.
@@ -57,7 +58,7 @@ The main flow is `skillsmith init my-skill`, then `skillsmith test my-skill`.
 - **A new check.** Add it to [src/commands/test.ts](../src/commands/test.ts) and to `validateContent` in [src/mcp/server.ts](../src/mcp/server.ts). If it is an error, add it to [hooks/check-skill.cjs](../hooks/check-skill.cjs) and to the shell script in [src/commands/sandbox-run.ts](../src/commands/sandbox-run.ts). Then add a fixture to `FIXTURES` in [eval/golden.eval.ts](../eval/golden.eval.ts). The agreement cases fail if one copy drifts.
 - **A new template.** Add a function to [src/templates/index.ts](../src/templates/index.ts). Offer it in [src/commands/init.ts](../src/commands/init.ts) and in the `skillsmith_init` tool in [src/mcp/server.ts](../src/mcp/server.ts). Every template must pass `skillsmith test --strict`.
 - **A new MCP tool.** Add it to the `TOOLS` list and to the switch in `handleRequest` in [src/mcp/server.ts](../src/mcp/server.ts). Cover it in [tests/mcp-server.test.ts](../tests/mcp-server.test.ts).
-- **A new catalog skill.** The catalog is written out three times. `list` reads [src/commands/list.ts](../src/commands/list.ts), `install` reads [src/commands/install.ts](../src/commands/install.ts), and the MCP server has its own list. Today they hold ten, five and eight entries, so add the skill to all three.
+- **A new catalog skill.** Add one entry to `CATALOG` in [src/catalog.ts](../src/catalog.ts). `list`, `install` and the MCP tool `skillsmith_list` all read it, so the skill shows up in all three. Then raise the catalog's size in [README.md](../README.md). Golden case E15 fails until the readers agree, every entry installs and passes, and the README gives the right size.
 - **A new command.** Add a file in [src/commands/](../src/commands/) and register it in [src/index.ts](../src/index.ts). Wrap it in `audited` if it changes files.
 - **A new skill for this repository.** Add `skills/<name>/SKILL.md` and list it in [skills/README.md](../skills/README.md). A golden case runs `test --strict` on every skill there.
 

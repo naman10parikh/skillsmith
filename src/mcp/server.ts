@@ -26,6 +26,7 @@ import { readFile, writeFile, mkdir, readdir, stat } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { tmpdir } from "node:os";
 import { getBasicTemplate, getAdvancedTemplate, getMcpTemplate } from "../templates/index.js";
+import { CATALOG } from "../catalog.js";
 
 // ---------------------------------------------------------------------------
 // Minimal MCP SDK types (JSON-RPC 2.0 over stdio)
@@ -254,23 +255,13 @@ async function toolTest(params: { path: string; strict?: string }) {
   return { passed, errors, warnings, results };
 }
 
-// Built-in catalog (same set as list.ts)
-const BUILTIN_SKILLS = [
-  { name: "commit-msg", description: "Auto-generate conventional commit messages", category: "git" },
-  { name: "test-generator", description: "Generate Vitest/Jest tests from source files", category: "testing" },
-  { name: "api-scaffolder", description: "Scaffold REST/GraphQL endpoints", category: "backend" },
-  { name: "refactor-guide", description: "Step-by-step refactoring with safety checks", category: "code-quality" },
-  { name: "debug-assistant", description: "Systematic debugging workflow", category: "debugging" },
-  { name: "docs-writer", description: "Generate JSDoc and README docs", category: "documentation" },
-  { name: "pr-reviewer", description: "Code review checklist and feedback", category: "code-quality" },
-  { name: "env-setup", description: "Environment setup and validation", category: "devops" },
-];
+// The built-in catalog lives in src/catalog.ts, shared with `list` and `install`.
 
 function toolList(params: { category?: string }) {
   const { category } = params;
   const skills = category
-    ? BUILTIN_SKILLS.filter((s) => s.category === category)
-    : BUILTIN_SKILLS;
+    ? CATALOG.filter((s) => s.category === category)
+    : CATALOG;
   return { skills, totalCount: skills.length };
 }
 

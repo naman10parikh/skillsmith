@@ -11,7 +11,7 @@
  *   - Deploy registry.skillsmith.dev (GitHub-backed, see TODOS.md §REG-02)
  *
  * Once live, this module will perform real HTTP calls. Until then, list/install
- * fall back to the BUILTIN_CATALOG in src/commands/list.ts.
+ * fall back to the CATALOG in src/catalog.ts.
  */
 
 export interface SkillEntry {

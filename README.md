@@ -74,11 +74,11 @@ Codex, Cursor, OpenCode, GitHub Copilot and other agents read [AGENTS.md](AGENTS
 
 ## Quick start
 
-It needs Node.js 18 or later. The npm name `skillsmith` belongs to a different project, so install
-it from GitHub (or put `npx -y -p github:naman10parikh/skillsmith` in front of each command):
+It needs Node.js 18 or later. The npm name `skillsmith` belongs to a different project, so run it
+from GitHub. One alias keeps the commands short:
 
 ```bash
-npm install -g github:naman10parikh/skillsmith
+alias skillsmith='npx -y -p github:naman10parikh/skillsmith skillsmith'
 skillsmith init changelog-entry
 #   ✓ SKILL.md
 #   ✓ skillsmith.json

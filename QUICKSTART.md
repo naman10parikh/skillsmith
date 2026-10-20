@@ -10,12 +10,16 @@ npx -y -p github:naman10parikh/skillsmith skillsmith init my-skill          # sc
 npx -y -p github:naman10parikh/skillsmith skillsmith test my-skill --strict  # check it
 ```
 
-## Install it once
+## Keep the commands short
 
 ```bash
-npm install -g github:naman10parikh/skillsmith
+alias skillsmith='npx -y -p github:naman10parikh/skillsmith skillsmith'
 skillsmith --help
 ```
+
+A global `npm install -g github:naman10parikh/skillsmith` does not work yet: npm skips the build
+tools when it installs a GitHub package globally, so the build step fails. The alias runs the same
+code through npx.
 
 ## Develop it (from a clone)
 

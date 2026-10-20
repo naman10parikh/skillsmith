@@ -1,5 +1,5 @@
 import { readFile, stat } from "node:fs/promises";
-import { join, basename } from "node:path";
+import { join, basename, resolve } from "node:path";
 import chalk from "chalk";
 
 interface PublishOptions {
@@ -23,7 +23,7 @@ export async function publishCommand(
   path: string,
   options: PublishOptions,
 ): Promise<void> {
-  const resolvedPath = join(process.cwd(), path);
+  const resolvedPath = resolve(process.cwd(), path);
   const skillMdPath = join(resolvedPath, "SKILL.md");
 
   // Verify SKILL.md exists

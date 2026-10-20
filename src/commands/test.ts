@@ -1,5 +1,5 @@
 import { readFile, stat, readdir } from "node:fs/promises";
-import { join, basename } from "node:path";
+import { join, basename, resolve } from "node:path";
 import chalk from "chalk";
 
 interface TestOptions {
@@ -33,7 +33,7 @@ export async function testCommand(
   options: TestOptions,
 ): Promise<void> {
   const results: TestResult[] = [];
-  const resolvedPath = join(process.cwd(), path);
+  const resolvedPath = resolve(process.cwd(), path);
 
   // Determine if path is a file or directory
   const pathStat = await stat(resolvedPath).catch(() => null);
@@ -86,6 +86,19 @@ export async function testCommand(
         : `${wordCount} words — consider trimming (target: <2,000)`,
   });
 
+  // Agent Skills readers (Claude Code, Gemini CLI, Codex) find a skill by its frontmatter name and description.
+  const frontmatter = /^---\r?\n([\s\S]*?)\r?\n---/.exec(content);
+  const hasFrontmatter =
+    !!frontmatter && /^name:\s*\S/m.test(frontmatter[1]) && /^description:\s*\S/m.test(frontmatter[1]);
+  results.push({
+    name: "Has frontmatter (name, description)",
+    passed: hasFrontmatter,
+    severity: "error",
+    message: hasFrontmatter
+      ? "Found name and description"
+      : "Missing YAML frontmatter with name and description: agents use them to find the skill",
+  });
+
   // 3. Check required sections
   for (const section of REQUIRED_SECTIONS) {
     const found = section.pattern.test(content);
@@ -113,7 +126,7 @@ export async function testCommand(
   // 5. Check for empty sections
   const emptyHeadings = lines.filter((line, i) => {
     if (!/^#{1,3}\s/.test(line)) return false;
-    const nextLine = lines[i + 1]?.trim();
+    const nextLine = lines.slice(i + 1).find((l) => l.trim())?.trim(); // skip blank lines
     return !nextLine || /^#{1,3}\s/.test(nextLine);
   });
   results.push({
@@ -175,18 +188,9 @@ function printResults(results: TestResult[], options: TestOptions): void {
     const warnings = results.filter(
       (r) => !r.passed && r.severity === "warning",
     ).length;
-    console.log(
-      JSON.stringify(
-        {
-          passed: errors === 0 && (!options.strict || warnings === 0),
-          errors,
-          warnings,
-          results,
-        },
-        null,
-        2,
-      ),
-    );
+    const passed = errors === 0 && (!options.strict || warnings === 0);
+    console.log(JSON.stringify({ passed, errors, warnings, results }, null, 2));
+    if (!passed) process.exitCode = 1; // so a CI step fails, as it does without --json
     return;
   }
 

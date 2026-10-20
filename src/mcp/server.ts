@@ -7,7 +7,7 @@
  * the chat interface.
  *
  * Run:
- *   npx skillsmith-mcp          (after `npm install -g @energy/skillsmith`)
+ *   npx -y -p github:naman10parikh/skillsmith skillsmith-mcp   (straight from GitHub)
  *   node dist/mcp/server.js     (from repo root after `pnpm build`)
  *   pnpm mcp:dev                (dev mode via tsx)
  *
@@ -16,7 +16,7 @@
  *     "mcpServers": {
  *       "skillsmith": {
  *         "command": "npx",
- *         "args": ["-y", "@energy/skillsmith", "mcp"]
+ *         "args": ["-y", "-p", "github:naman10parikh/skillsmith", "skillsmith-mcp"]
  *       }
  *     }
  *   }
@@ -177,6 +177,19 @@ function validateContent(content: string): CheckResult[] {
     message: wordCount <= 2000 ? `${wordCount} words` : `${wordCount} words — target <2,000`,
   });
 
+  // Agent Skills readers (Claude Code, Gemini CLI, Codex) find a skill by its frontmatter name and description.
+  const frontmatter = /^---\r?\n([\s\S]*?)\r?\n---/.exec(content);
+  const hasFrontmatter =
+    !!frontmatter && /^name:\s*\S/m.test(frontmatter[1]) && /^description:\s*\S/m.test(frontmatter[1]);
+  results.push({
+    name: "Has frontmatter (name, description)",
+    passed: hasFrontmatter,
+    severity: "error",
+    message: hasFrontmatter
+      ? "Found name and description"
+      : "Missing YAML frontmatter with name and description: agents use them to find the skill",
+  });
+
   for (const { pattern, name: sName } of [
     { pattern: /^#\s+.+/m, name: "Title (H1 heading)" },
     { pattern: /##\s*(When|Trigger)/im, name: "Trigger section" },
@@ -196,7 +209,7 @@ function validateContent(content: string): CheckResult[] {
 
   const emptyHeadings = lines.filter((line, i) => {
     if (!/^#{1,3}\s/.test(line)) return false;
-    const next = lines[i + 1]?.trim();
+    const next = lines.slice(i + 1).find((l) => l.trim())?.trim(); // skip blank lines
     return !next || /^#{1,3}\s/.test(next);
   });
   results.push({
@@ -345,22 +358,30 @@ async function main() {
 
   process.stdout.write(""); // keep stdout open
 
-  rl.on("line", async (line) => {
+  // Requests still being answered when stdin closes (a piped client) must get their reply first.
+  const pending = new Set<Promise<void>>();
+  rl.on("line", (line) => {
     const trimmed = line.trim();
     if (!trimmed) return;
-    try {
-      const req = JSON.parse(trimmed) as JsonRpcRequest;
-      const response = await handleRequest(req);
-      // Only send responses for requests (id present), not notifications
-      if (req.id !== undefined) {
-        process.stdout.write(JSON.stringify(response) + "\n");
+    const work = (async () => {
+      try {
+        const req = JSON.parse(trimmed) as JsonRpcRequest;
+        const response = await handleRequest(req);
+        // Only send responses for requests (id present), not notifications
+        if (req.id !== undefined) {
+          process.stdout.write(JSON.stringify(response) + "\n");
+        }
+      } catch {
+        // Malformed JSON — ignore (MCP spec allows silent drop)
       }
-    } catch {
-      // Malformed JSON — ignore (MCP spec allows silent drop)
-    }
+    })();
+    pending.add(work);
+    void work.finally(() => pending.delete(work));
   });
 
-  rl.on("close", () => process.exit(0));
+  rl.on("close", () => {
+    void Promise.allSettled([...pending]).then(() => process.exit(0));
+  });
 }
 
 main().catch((e) => {

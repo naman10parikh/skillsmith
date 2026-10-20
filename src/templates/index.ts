@@ -5,7 +5,12 @@ export function getBasicTemplate(name: string): Record<string, string> {
     .join(" ");
 
   return {
-    "SKILL.md": `# ${title}
+    "SKILL.md": `---
+name: ${name}
+description: ${title}. Use when [the one-line situation that should trigger this skill].
+---
+
+# ${title}
 
 One-line description of what this skill does.
 
@@ -95,7 +100,12 @@ export function getMcpTemplate(name: string): Record<string, string> {
     .join(" ");
 
   return {
-    "SKILL.md": `# ${title}
+    "SKILL.md": `---
+name: ${name}
+description: ${title}, through the ${name} MCP server. Use when [the one-line situation that should trigger this skill].
+---
+
+# ${title}
 
 Skill that wraps the \`${name}\` MCP server for enhanced capabilities.
 
@@ -106,20 +116,14 @@ Skill that wraps the \`${name}\` MCP server for enhanced capabilities.
 
 ## Prerequisites
 
-Install the MCP server:
-
-\`\`\`bash
-npx skillsmith install-mcp ${name}
-\`\`\`
-
-Or add to \`.mcp.json\`:
+Add the MCP server to \`.mcp.json\` (put the server's real package in place of the brackets):
 
 \`\`\`json
 {
   "mcpServers": {
     "${name}": {
       "command": "npx",
-      "args": ["-y", "@skillsmith/${name}-mcp"]
+      "args": ["-y", "[the ${name} MCP server package]"]
     }
   }
 }
@@ -130,6 +134,11 @@ Or add to \`.mcp.json\`:
 1. Check if MCP server is available
 2. Use the MCP tools: \`${name}_tool1\`, \`${name}_tool2\`
 3. Process and format results
+
+## Example
+
+User: "[a request this skill handles]"
+Claude: calls \`${name}_tool1\`, then reports [the result]
 
 ## Available MCP Tools
 
@@ -152,7 +161,7 @@ Describe the expected output format.
         author: "",
         license: "MIT",
         mcp: {
-          server: `@skillsmith/${name}-mcp`,
+          server: `[the ${name} MCP server package]`,
           tools: [`${name}_tool1`, `${name}_tool2`],
         },
       },

@@ -188,9 +188,9 @@ Every project in this fleet is graded on the same 11 harness components and on s
 | Tools/CLIs | ✅ | package.json:9-10 (skillsmith, skillsmith-mcp); package.json:34 (prepare) |
 | Hooks | ✅ | .claude/settings.json:4,24; hooks/hooks.json:4; hooks/check-skill.cjs:18 |
 | Sub-agents | ✅ | .claude/agents/skill-reviewer.md:1; .claude/agents/skill-security-auditor.md:1 |
-| MCPs | ✅ | src/mcp/server.ts:63 (4 tools); .mcp.json:3 |
+| MCPs | ✅ | src/mcp/server.ts:64 (4 tools); .mcp.json:3 |
 | Dispatch | ✅ | scripts/improve.mjs:1 (review, extract, propose, try); .github/workflows/improve.yml:10-12 (daily) |
-| Evals | ✅ | eval/golden.eval.ts:87 (23 cases); .github/workflows/ci.yml:32-35 |
+| Evals | ✅ | eval/golden.eval.ts:87 (24 cases); .github/workflows/ci.yml:32-35 |
 | Observability | ✅ | src/observability/runs.ts:43 (runs.jsonl); src/index.ts:54,70,78 (init, publish, install) |
 | Sandbox/Infra | ✅ | src/commands/sandbox-run.ts:106 (E2B Sandbox.create) |
 | Self-improvement | ✅ | dsip.json:5 (L2); scripts/improve.mjs:1 |

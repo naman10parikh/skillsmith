@@ -68,15 +68,16 @@ export async function publishCommand(
     return;
   }
 
-  // In a real implementation, this would POST to the registry
+  // The shared registry is not live, so nothing is uploaded; `list` reads only the built-in catalog.
   console.log(
-    chalk.yellow(`\n  ⚠ Registry not yet live. Publish to GitHub instead:`),
+    chalk.yellow(`\n  ⚠ The shared registry is not live, so nothing was published.`),
   );
   console.log(
-    chalk.dim(`  1. Push to a GitHub repo with topic "skillsmith-skill"`),
+    chalk.dim(`  To share it now, push the skill's folder to a GitHub repository.`),
   );
-  console.log(chalk.dim(`  2. Add skillsmith.json with metadata`));
-  console.log(chalk.dim(`  3. Skills are discoverable via: skillsmith list`));
+  console.log(
+    chalk.dim(`  Others copy that folder into .claude/skills/ and run skillsmith test on it.`),
+  );
   console.log(chalk.green(`\n  ✓ Package validated and ready for publishing.`));
 }
 

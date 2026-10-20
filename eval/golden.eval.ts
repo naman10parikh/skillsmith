@@ -163,6 +163,13 @@ describe("the rest of the product", () => {
     expect(existsSync(join(dir, "nowhere"))).toBe(false);
   });
 
+  it("E17 publish says the registry is not live, so nothing was published, and never points at list", () => {
+    cli(["init", "shared"]);
+    const r = cli(["publish", "shared"]);
+    expect(r.stdout).toContain("nothing was published");
+    expect(r.stdout).not.toMatch(/discoverable/i);
+  });
+
   it("E11 the repository's own skills pass --strict", () => {
     const skills = readdirSync(join(ROOT, "skills"), { withFileTypes: true }).filter((d) => d.isDirectory());
     expect(skills.length).toBeGreaterThanOrEqual(3);

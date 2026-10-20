@@ -171,7 +171,7 @@ The MCP server's four tools (`skillsmith_init`, `skillsmith_test`, `skillsmith_v
 pnpm install      # also builds dist/
 pnpm build        # tsc to dist/
 pnpm test         # 25 unit tests
-pnpm eval         # 25 golden evals against the built CLI, MCP server and hook
+pnpm eval         # 26 golden evals against the built CLI, MCP server and hook
 pnpm improve      # the self-improvement loop; writes logs/improve/latest.md
 ```
 
@@ -190,7 +190,7 @@ Every project in this fleet is graded on the same 11 harness components and on s
 | Sub-agents | ✅ | .claude/agents/skill-reviewer.md:1; .claude/agents/skill-security-auditor.md:1 |
 | MCPs | ✅ | src/mcp/server.ts:64 (4 tools); .mcp.json:3 |
 | Dispatch | ✅ | scripts/improve.mjs:1 (review, extract, propose, try); .github/workflows/improve.yml:10-12 (daily) |
-| Evals | ✅ | eval/golden.eval.ts:87 (25 cases); .github/workflows/ci.yml:32-35 |
+| Evals | ✅ | eval/golden.eval.ts:87 (26 cases); .github/workflows/ci.yml:32-35 |
 | Observability | ✅ | src/observability/runs.ts:43 (runs.jsonl); src/index.ts:54,70,78 (init, publish, install) |
 | Sandbox/Infra | ✅ | src/commands/sandbox-run.ts:106 (E2B Sandbox.create) |
 | Self-improvement | ✅ | dsip.json:5 (L2); scripts/improve.mjs:1 |

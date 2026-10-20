@@ -28,10 +28,9 @@ export async function installCommand(
   const catalogEntry = CATALOG.find((s) => s.name === name);
 
   if (!catalogEntry) {
-    // Try fetching from registry
-    console.log(chalk.dim(`  Searching registry for "${name}"...`));
+    // The shared registry is not live, so the starter catalog is the only source.
     console.log(
-      chalk.yellow(`\n  ⚠ Skill "${name}" not found in catalog or registry.`),
+      chalk.yellow(`  ⚠ Skill "${name}" is not in the starter catalog.`),
     );
     console.log(
       chalk.dim(
@@ -39,6 +38,7 @@ export async function installCommand(
       ),
     );
     console.log(chalk.dim(`  Run: skillsmith list`));
+    process.exitCode = 1;
     return;
   }
 

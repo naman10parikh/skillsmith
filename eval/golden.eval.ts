@@ -5,7 +5,7 @@
 // (`sandbox-run`) and needs a key, so it is proven by a live run instead.
 import { describe, it, expect, beforeAll } from "vitest";
 import { spawnSync } from "node:child_process";
-import { mkdtempSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { existsSync, mkdtempSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -153,6 +153,14 @@ describe("the rest of the product", () => {
     const file = join(dir, "installed", "commit-msg", "SKILL.md");
     expect(readFileSync(file, "utf8")).not.toMatch(/https?:\/\//);
     expect(cliVerdict(join(dir, "installed", "commit-msg")).passed).toBe(true);
+  });
+
+  it("E16 install of a name not in the catalog exits 1, writes nothing and claims no registry search", () => {
+    const r = cli(["install", "no-such-skill", "--dir", "nowhere"]);
+    expect(r.status).toBe(1);
+    expect(r.stdout).toContain("not in the starter catalog");
+    expect(r.stdout + r.stderr).not.toMatch(/registry/i);
+    expect(existsSync(join(dir, "nowhere"))).toBe(false);
   });
 
   it("E11 the repository's own skills pass --strict", () => {

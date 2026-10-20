@@ -20,7 +20,7 @@ Every error → root cause → rule. Auto-compressed when >500 lines (memory-com
 - **Root cause:** the checks encoded an older idea of a skill (sections only), the install stub pointed at a planned registry, and `path.join(cwd, path)` was used where `path.resolve` was meant.
 - **Rule:** every check must match what agents actually read, starting with frontmatter `name` and `description`; a generated skill never sends an agent to a source nobody controls; the CLI, the MCP server and the hook must agree, and `eval/golden.eval.ts` fails CI when they drift.
 
-## 2026-10-20 — The catalog was written three times and the copies disagreed
+## 2026-10-20: The catalog was written three times and the copies disagreed
 
 - **What broke:** `list` showed 10 starter skills, `install` knew 5 and the MCP tool `skillsmith_list` returned 8.
   `list` offered skills that `install` then said did not exist.
